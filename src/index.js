@@ -34,6 +34,7 @@ class ReactCreditCards extends React.Component {
       name: PropTypes.string,
     }),
     preview: PropTypes.bool,
+    redacted: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -45,6 +46,7 @@ class ReactCreditCards extends React.Component {
       name: 'YOUR NAME HERE',
     },
     preview: false,
+    redacted: false,
   };
 
   componentDidUpdate(prevProps) {
@@ -181,7 +183,7 @@ class ReactCreditCards extends React.Component {
   }
 
   render() {
-    const { cvc, focused, locale, name, placeholders } = this.props;
+    const { cvc, focused, locale, name, placeholders, redacted } = this.props;
     const { number, expiry } = this;
 
     return (
@@ -212,7 +214,11 @@ class ReactCreditCards extends React.Component {
                 number.substr(0, 1) !== '•' ? 'rccs--filled' : '',
               ].join(' ').trim()}
             >
-              {number}
+              {
+                !redacted || number.length < 4
+                  ? number
+                  : '*'.repeat(number.length - 4) + number.substring(number - 4)
+              }
             </div>
             <div
               className={[
