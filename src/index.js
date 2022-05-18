@@ -217,7 +217,12 @@ class ReactCreditCards extends React.Component {
               {
                 !redacted || number.length < 4
                   ? number
-                  : '*'.repeat(number.length - 4 - number.split(' ').length) + number.substring(number.length - 4)
+                  : ('*'.repeat(number.length - 3 - number.split(' ').length)
+                    + number.substring(number.length - 4))
+                    .split('')
+                    .map((c, i) => (i + 1) % 4 === 0 ? `${c} ` : c)
+                    .join('')
+                    .trim()
               }
             </div>
             <div
